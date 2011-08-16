@@ -3,7 +3,7 @@ package org.noorg.fink.neo4j.test.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.neo4j.annotation.GraphProperty;
+import org.neo4j.graphdb.Node;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -19,10 +19,13 @@ public class Page {
 	private Set<Page> subPages = new HashSet<Page>();
 
 	@Indexed
-	@GraphProperty
 	private String name;
 
 	Page() {}
+
+	public Page(Node n) {
+		setPersistentState(n);
+	}
 	
 	public Page(String name) {
 		this.name = name;
@@ -38,8 +41,6 @@ public class Page {
 
 	public void addPage(Page page) {
 		subPages.add(page);
-//		page.persist();
-//		this.relateTo(, "IS_SUBPAGE");
 	}
 
 	public Page getParentPage() {
