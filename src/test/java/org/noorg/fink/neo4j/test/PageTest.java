@@ -1,6 +1,13 @@
 package org.noorg.fink.neo4j.test;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.StringContains.containsString;
+
+import java.util.Iterator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,16 +48,22 @@ public class PageTest {
 	@Test
 	public void shouldPersistPages() {
 		pageRepository.createSomePages();
-		Page p = pageRepository.findPageByName("root");
+		Page p = pageRepository.findPageByTitle("root");
 		assertNotNull(p);
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void shouldContainSubPages() {
 		pageRepository.createSomePages();
-		Page p = pageRepository.findPageByName("root");
+		Page p = pageRepository.findPageByTitle("root");
 		assertNotNull(p);
 		assertEquals(2, p.getSubPages().size());
+		
+		Iterator<Page> it = p.getSubPages().iterator();
+		
+		assertThat(it.next().getTitle(), is(anyOf(containsString("sub1"), containsString("sub2"))));
+		assertThat(it.next().getTitle(), is(anyOf(containsString("sub1"), containsString("sub2"))));
 	}
 	
 }

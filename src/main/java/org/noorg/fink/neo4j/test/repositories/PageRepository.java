@@ -5,6 +5,7 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.noorg.fink.neo4j.test.entities.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.neo4j.repository.AbstractGraphRepository;
 import org.springframework.data.neo4j.repository.DirectGraphRepositoryFactory;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.support.GraphDatabaseContext;
@@ -39,13 +40,13 @@ public class PageRepository {
 		return repository.count();
 	}
 
-	public Page findPageByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Page findPageByTitle(String title) {
+		return ((AbstractGraphRepository<Node, Page>)repository).findByPropertyValue("index_title", "title", title);
 	}
 
-	public Page findPageByNameManually(String name) {
-		Index<Node> index = context.getIndex(Page.class);
-		IndexHits<Node> hits = index.get("name", name);
+	public Page findPageByTitleManually(String title) {
+		Index<Node> index = context.getIndex(Page.class, "index_name");
+		IndexHits<Node> hits = index.get("title", title);
 		if (hits.hasNext()) {
 			return context.createEntityFromState(hits.next(), Page.class);
 		}

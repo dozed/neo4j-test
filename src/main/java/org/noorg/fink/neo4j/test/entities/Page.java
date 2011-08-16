@@ -4,13 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.neo4j.graphdb.Node;
-import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 import org.springframework.data.neo4j.core.Direction;
 
 @NodeEntity
-public class Page {
+public class Page extends BaseItem {
 
 	@RelatedTo(elementClass = Page.class, type = "IS_SUBPAGE")
 	private Page parentPage;
@@ -18,17 +17,14 @@ public class Page {
 	@RelatedTo(elementClass = Page.class, type = "IS_SUBPAGE", direction = Direction.INCOMING)
 	private Set<Page> subPages = new HashSet<Page>();
 
-	@Indexed
-	private String name;
-
 	Page() {}
 
 	public Page(Node n) {
 		setPersistentState(n);
 	}
 	
-	public Page(String name) {
-		this.name = name;
+	public Page(String title) {
+		setTitle(title);
 	}
 
 	public Set<Page> getSubPages() {
@@ -49,14 +45,6 @@ public class Page {
 
 	public void setParentPage(Page parentPage) {
 		this.parentPage = parentPage;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 }
