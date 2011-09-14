@@ -24,6 +24,12 @@
 		</repository>
 
 		<repository>
+			<id>repository.springframework.maven.snapshot</id>
+			<name>Spring Framework Maven Snapshot Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+		</repository>
+
+		<repository>
 			<id>neo4j-snapshots</id>
 			<name>Neo4j Snapshot Repository</name>
 			<url>http://m2.neo4j.org/snapshots</url>
@@ -65,10 +71,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib-nodep</artifactId> 
-			<version>2.2</version> </dependency> -->	<!-- <dependency> <groupId>joda-time</groupId> <artifactId>joda-time</artifactId> 
-			<version>1.6.2</version> <type>jar</type> <scope>compile</scope> </dependency> 
-			<dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
+		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib-nodep</artifactId> <version>2.2</version> </dependency> -->	<!-- <dependency> <groupId>joda-time</groupId> <artifactId>joda-time</artifactId> <version>1.6.2</version> <type>jar</type> 
+			<scope>compile</scope> </dependency> <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
 			<version>r09</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 	</dependencies>
 
@@ -95,8 +99,7 @@
 				<artifactId>aspectj-maven-plugin</artifactId>
 				<version>1.0</version>
 				<dependencies>
-					<!-- NB: You must use Maven 2.0.9 or above or these are ignored (see 
-						MNG-2972) -->
+					<!-- NB: You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjrt</artifactId>
