@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aspectj.version>1.6.11</aspectj.version>
+		<aspectj.version>1.6.12.M1</aspectj.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 	</properties>
 
@@ -54,12 +54,6 @@
 			<version>1.4.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
@@ -71,9 +65,16 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib-nodep</artifactId> <version>2.2</version> </dependency> -->	<!-- <dependency> <groupId>joda-time</groupId> <artifactId>joda-time</artifactId> <version>1.6.2</version> <type>jar</type> 
-			<scope>compile</scope> </dependency> <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
-			<version>r09</version> <type>jar</type> <scope>compile</scope> </dependency> -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -94,31 +95,12 @@
 				<version>2.5</version>
 			</plugin>
 
+			<!-- aspectj-maven-plugin -->
 			<plugin>
+				<!-- required to resolve aspectj-enhanced class features -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.0</version>
-				<dependencies>
-					<!-- NB: You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjrt</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
+				<version>1.4</version>
 				<configuration>
 					<outxml>true</outxml>
 					<aspectLibraries>
@@ -134,12 +116,44 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.7</version>
+				<!-- Note 2.8 does not work with AspectJ aspect path -->
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+					<wtpversion>2.0</wtpversion>
+					<additionalBuildcommands>
+						<buildCommand>
+							<name>org.eclipse.ajdt.core.ajbuilder</name>
+							<arguments>
+								<aspectPath>org.springframework.aspects</aspectPath>
+							</arguments>
+						</buildCommand>
+					</additionalBuildcommands>
+					<additionalProjectnatures>
+						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
+					</additionalProjectnatures>
+				</configuration>
 			</plugin>
 		</plugins>
-		
+
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven 
+					build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
