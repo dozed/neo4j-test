@@ -1,7 +1,7 @@
 target
 
 # eclipse files
-.project
-.settings
-.classpath
+#.project
+#.settings
+#.classpath
 
