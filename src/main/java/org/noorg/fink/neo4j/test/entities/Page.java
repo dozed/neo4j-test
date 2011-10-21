@@ -3,10 +3,9 @@ package org.noorg.fink.neo4j.test.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.data.neo4j.core.Direction;
 
 @NodeEntity
 public class Page extends BaseItem {
@@ -17,12 +16,9 @@ public class Page extends BaseItem {
 	@RelatedTo(elementClass = Page.class, type = "IS_SUBPAGE", direction = Direction.INCOMING)
 	private Set<Page> subPages = new HashSet<Page>();
 
-	Page() {}
-
-	public Page(Node n) {
-		setPersistentState(n);
+	Page() {
 	}
-	
+
 	public Page(String title) {
 		setTitle(title);
 	}

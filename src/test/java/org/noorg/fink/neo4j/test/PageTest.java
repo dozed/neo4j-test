@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.noorg.fink.neo4j.test.entities.Page;
 import org.noorg.fink.neo4j.test.repositories.PageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.support.GraphDatabaseContext;
+import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.data.neo4j.support.node.Neo4jHelper;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,18 +31,19 @@ public class PageTest {
 	private PageRepository pageRepository;
 
 	@Autowired
-	private GraphDatabaseContext graphDatabaseContext;
+	private Neo4jTemplate template;
 
 	@Rollback(false)
 	@BeforeTransaction
 	public void clearDatabase() {
-		Neo4jHelper.cleanDb(graphDatabaseContext);
+		Neo4jHelper.cleanDb(template);
 	}
 
 	@Test
 	public void shouldCreatePages() {
 		pageRepository.createSomePages();
 		assertEquals(3, pageRepository.countPages());
+		assertEquals(3, pageRepository.findAll().size());
 	}
 
 	@Test
